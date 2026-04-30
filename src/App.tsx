@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { fetchSudoku } from "./services/sudokuApi";
+import type { Board } from "./types";
 
 function App() {
-  const [board, setBoard] = useState<number[][] | null>(null);
+  const [board, setBoard] = useState<Board | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +15,7 @@ function App() {
       try {
         const data = await fetchSudoku();
         console.log("API DATA:", data);
-        setBoard(data.puzzle); // adjust based on API response shape
+        setBoard(data.puzzle); 
       } catch (err) {
         console.error(err);
         setError("Failed to load Sudoku!");
