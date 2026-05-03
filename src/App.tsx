@@ -15,7 +15,7 @@ function App() {
       try {
         const data = await fetchSudoku();
         console.log("API DATA:", data);
-        setBoard(data.puzzle); 
+        setBoard(data.puzzle);
       } catch (err) {
         console.error(err);
         setError("Failed to load Sudoku!");
@@ -49,7 +49,7 @@ function App() {
 
   return (
     <section className="flex flex-col items-center justify-center h-screen bg-linear-to-r from-blue-400 to-purple-600">
-      <h1 className="text-6xl text-white">SUDOKU</h1>
+      <h1 className="text-6xl text-white p-6">SUDOKU</h1>
       {loading && <p className="text-white mt-4">Loading...</p>}
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
@@ -57,6 +57,13 @@ function App() {
         <div className="max-w-fit grid grid-cols-9">
           {board.map((row, rowIndex) =>
             row.map((cell, colIndex) => {
+              let borders = "";
+
+              if (rowIndex % 3 === 0) borders += " border-t-4";
+              if (colIndex % 3 === 0) borders += " border-l-4";
+              if (rowIndex === 8) borders += " border-b-4";
+              if (colIndex === 8) borders += " border-r-4";
+
               const boxRow = Math.floor(rowIndex / 3);
               const boxCol = Math.floor(colIndex / 3);
               const isLightBox = (boxRow + boxCol) % 2 === 0;
@@ -64,9 +71,9 @@ function App() {
               return (
                 <div
                   key={`${rowIndex}-${colIndex}`}
-                  className={`w-12 h-12 flex items-center justify-center border border-gray-300 ${
-                    isLightBox ? "bg-white" : "bg-gray-200"
-                  }`}
+                  className={`w-12 h-12 flex items-center justify-center border border-blue-900  ${
+                    isLightBox ? "bg-white text-blue-800" : "bg-blue-400 text-white"
+                  }${borders}`}
                 >
                   <input
                     value={cell ?? ""}
@@ -76,7 +83,7 @@ function App() {
                     onChange={(e) =>
                       handleInputEdit(e.target.value, rowIndex, colIndex)
                     }
-                    className="w-full h-full text-center text-lg bg-transparent focus:outline-none"
+                    className="w-full h-full text-center text-2xl bg-transparent focus:outline-none"
                   />
                 </div>
               );
