@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { fetchSudoku } from "./services/sudokuApi";
 import type { Board } from "./types";
+import { NumberPad } from "./NumberPad";
 
 function App() {
   const [board, setBoard] = useState<Board | null>(null);
@@ -55,13 +56,14 @@ function App() {
   console.log("selectedCell:", selectedCell);
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-dvh w-full bg-linear-to-r from-blue-400 to-purple-600">
+    <div className="flex flex-col items-center justify-center min-h-dvh w-full bg-linear-to-r from-blue-400 to-purple-600">
       <h1 className="text-6xl text-white p-6">SUDOKU</h1>
+    
       {loading && <p className="text-white mt-4">Loading...</p>}
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
       {board && (
-        <div className="max-w-fit grid grid-cols-9">
+        <section className="max-w-fit grid grid-cols-9">
           {board.map((row, rowIndex) =>
             row.map((cell, colIndex) => {
               let styling = "";
@@ -107,9 +109,12 @@ function App() {
               );
             }),
           )}
-        </div>
+        </section>
       )}
-    </section>
+      <section className="mt-6">
+        <NumberPad />
+      </section>
+    </div>
   );
 }
 
