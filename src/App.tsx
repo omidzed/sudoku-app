@@ -53,12 +53,18 @@ function App() {
     }
     setBoard(newBoard);
   };
-  console.log("selectedCell:", selectedCell);
+
+  const handleNumberClick = (clickedNumber: number) => {
+    if (!board || !selectedCell) return;
+    const newBoard = board.map((row) => [...row]);
+    newBoard[selectedCell.row][selectedCell.col] = clickedNumber;
+    setBoard(newBoard);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh w-full bg-linear-to-r from-blue-400 to-purple-600">
       <h1 className="text-6xl text-white p-6">SUDOKU</h1>
-    
+
       {loading && <p className="text-white mt-4">Loading...</p>}
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
@@ -67,7 +73,7 @@ function App() {
           {board.map((row, rowIndex) =>
             row.map((cell, colIndex) => {
               let styling = "";
-                
+
               if (rowIndex % 3 === 0) styling += " border-t-4";
               if (colIndex % 3 === 0) styling += " border-l-4";
               if (rowIndex === 8) styling += " border-b-4";
@@ -112,7 +118,7 @@ function App() {
         </section>
       )}
       <section className="mt-6">
-        <NumberPad />
+        <NumberPad onNumberClick={handleNumberClick} />
       </section>
     </div>
   );
