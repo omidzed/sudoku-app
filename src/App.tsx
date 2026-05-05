@@ -34,25 +34,25 @@ function App() {
     loadPuzzle();
   }, []);
 
-  const handleInputEdit = (
-    value: string,
-    rowIndex: number,
-    colIndex: number,
-  ) => {
-    if (!board) return;
+  // const handleInputEdit = (
+  //   value: string,
+  //   rowIndex: number,
+  //   colIndex: number,
+  // ) => {
+  //   if (!board) return;
 
-    const newBoard = board.map((row) => [...row]);
-    const num = Number(value);
+  //   const newBoard = board.map((row) => [...row]);
+  //   const num = Number(value);
 
-    if (value === "") {
-      newBoard[rowIndex][colIndex] = null;
-    } else if (!isNaN(num) && num >= 1 && num <= 9) {
-      newBoard[rowIndex][colIndex] = num;
-    } else {
-      return;
-    }
-    setBoard(newBoard);
-  };
+  //   if (value === "") {
+  //     newBoard[rowIndex][colIndex] = null;
+  //   } else if (!isNaN(num) && num >= 1 && num <= 9) {
+  //     newBoard[rowIndex][colIndex] = num;
+  //   } else {
+  //     return;
+  //   }
+  //   setBoard(newBoard);
+  // };
 
   const handleNumberClick = (clickedNumber: number) => {
     if (!board || !selectedCell) return;
@@ -101,7 +101,13 @@ function App() {
                   } 
                   ${styling}`}
                 >
-                  <input
+                  <div
+                    onClick={() => setSelectedCell({ row: rowIndex, col: colIndex })}
+                    className="w-10 h-10 flex items-center justify-center text-2xl"
+                  >
+                    {cell ?? ""}
+                  </div>
+                  {/* <input
                     value={cell ?? ""}
                     type="text"
                     maxLength={1}
@@ -110,7 +116,7 @@ function App() {
                       handleInputEdit(e.target.value, rowIndex, colIndex)
                     }
                     className="w-full h-full text-center text-2xl bg-transparent focus:outline-none"
-                  />
+                  /> */}
                 </div>
               );
             }),
