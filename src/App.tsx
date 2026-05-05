@@ -38,8 +38,8 @@ function App() {
 
   const handleNumberClick = (clickedNumber: number) => {
     if (!board || !selectedCell || !initialBoard) return;
+
     const { row, col } = selectedCell;
-    // ❌ don't edit original cells
     if (initialBoard[row][col] !== null) return;
 
     const newBoard = board.map((row) => [...row]);
@@ -74,6 +74,7 @@ function App() {
               const boxRow = Math.floor(rowIndex / 3);
               const boxCol = Math.floor(colIndex / 3);
               const isLightBox = (boxRow + boxCol) % 2 === 0;
+              const isInitial = initialBoard?.[rowIndex][colIndex] !== null;
 
               return (
                 <div
@@ -95,7 +96,7 @@ function App() {
 
                       setSelectedCell({ row: rowIndex, col: colIndex });
                     }}
-                    className="w-10 h-10 flex items-center justify-center text-2xl"
+                    className={`${isInitial ? "" : "font-bold"} w-10 h-10 flex items-center justify-center text-2xl`}
                   >
                     {cell ?? ""}
                   </div>
