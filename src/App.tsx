@@ -102,21 +102,13 @@ function App() {
                   ${styling}`}
                 >
                   <div
-                    onClick={() => setSelectedCell({ row: rowIndex, col: colIndex })}
+                    onClick={() =>
+                      setSelectedCell({ row: rowIndex, col: colIndex })
+                    }
                     className="w-10 h-10 flex items-center justify-center text-2xl"
                   >
                     {cell ?? ""}
                   </div>
-                  {/* <input
-                    value={cell ?? ""}
-                    type="text"
-                    maxLength={1}
-                    disabled={initialBoard?.[rowIndex][colIndex] !== null}
-                    onChange={(e) =>
-                      handleInputEdit(e.target.value, rowIndex, colIndex)
-                    }
-                    className="w-full h-full text-center text-2xl bg-transparent focus:outline-none"
-                  /> */}
                 </div>
               );
             }),
