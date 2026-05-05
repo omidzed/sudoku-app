@@ -22,7 +22,9 @@ function App() {
         const data = await fetchSudoku();
         console.log("API DATA:", data);
         setBoard(data.puzzle);
-        setInitialBoard(data.puzzle);
+        if (!initialBoard) {
+          setInitialBoard(data.puzzle);
+        }
       } catch (err) {
         console.error(err);
         setError("Failed to load Sudoku!");
