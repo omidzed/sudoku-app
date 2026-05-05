@@ -20,11 +20,11 @@ function App() {
       setError(null);
       try {
         const data = await fetchSudoku();
+        const puzzle = data.puzzle.map((row) => [...row]);
+
         console.log("API DATA:", data);
-        setBoard(data.puzzle);
-        if (!initialBoard) {
-          setInitialBoard(data.puzzle);
-        }
+        setBoard(puzzle);
+        setInitialBoard(puzzle.map((row) => [...row]));
       } catch (err) {
         console.error(err);
         setError("Failed to load Sudoku!");
@@ -36,30 +36,14 @@ function App() {
     loadPuzzle();
   }, []);
 
-  // const handleInputEdit = (
-  //   value: string,
-  //   rowIndex: number,
-  //   colIndex: number,
-  // ) => {
-  //   if (!board) return;
-
-  //   const newBoard = board.map((row) => [...row]);
-  //   const num = Number(value);
-
-  //   if (value === "") {
-  //     newBoard[rowIndex][colIndex] = null;
-  //   } else if (!isNaN(num) && num >= 1 && num <= 9) {
-  //     newBoard[rowIndex][colIndex] = num;
-  //   } else {
-  //     return;
-  //   }
-  //   setBoard(newBoard);
-  // };
-
   const handleNumberClick = (clickedNumber: number) => {
-    if (!board || !selectedCell) return;
+    if (!board || !selectedCell || !initialBoard) return;
+    const { row, col } = selectedCell;
+    // ❌ don't edit original cells
+    if (initialBoard[row][col] !== null) return;
+
     const newBoard = board.map((row) => [...row]);
-    newBoard[selectedCell.row][selectedCell.col] = clickedNumber;
+    newBoard[row][col] = clickedNumber;
     setBoard(newBoard);
   };
 
@@ -82,7 +66,9 @@ function App() {
               if (colIndex === 8) styling += " border-r-4";
               if (
                 selectedCell?.row === rowIndex &&
-                selectedCell?.col === colIndex
+                selectedCell?.col === colIndex &&
+                initialBoard[selectedCell.row][selectedCell.col] === null
+
               )
                 styling += " bg-yellow-400";
 
@@ -104,9 +90,12 @@ function App() {
                   ${styling}`}
                 >
                   <div
-                    onClick={() =>
-                      setSelectedCell({ row: rowIndex, col: colIndex })
-                    }
+                    onClick={() => {
+                      if (!initialBoard) return;
+                      if (initialBoard[rowIndex][colIndex] !== null) return;
+
+                      setSelectedCell({ row: rowIndex, col: colIndex });
+                    }}
                     className="w-10 h-10 flex items-center justify-center text-2xl"
                   >
                     {cell ?? ""}
