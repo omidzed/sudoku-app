@@ -67,8 +67,7 @@ function App() {
               if (
                 selectedCell?.row === rowIndex &&
                 selectedCell?.col === colIndex &&
-                initialBoard[selectedCell.row][selectedCell.col] === null
-
+                initialBoard?.[selectedCell.row][selectedCell.col] === null
               )
                 styling += " bg-yellow-400";
 
