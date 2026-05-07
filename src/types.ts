@@ -4,4 +4,5 @@ export type Board = Cell[][];
 
 export type SudokuBoard = {
   puzzle: Board;
+  solution:Board;
 };

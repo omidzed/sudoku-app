@@ -8,6 +8,7 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 function App() {
   const [board, setBoard] = useState<Board | null>(null);
   const [initialBoard, setInitialBoard] = useState<Board | null>(null);
+  const [solutionBoard, setSolutionBoard] = useState<Board | null>(null);
   const [selectedCell, setSelectedCell] = useState<{
     row: number;
     col: number;
@@ -22,9 +23,11 @@ function App() {
       try {
         const data = await fetchSudoku();
         const puzzle = data.puzzle.map((row) => [...row]);
+        const solution = data.solution.map((row) => [...row]);
 
         console.log("API DATA:", data);
         setBoard(puzzle);
+        setSolutionBoard(solution);
         setInitialBoard(puzzle.map((row) => [...row]));
       } catch (err) {
         console.error(err);
@@ -38,7 +41,7 @@ function App() {
   }, []);
 
   const handleNumberClick = (clickedNumber: number) => {
-    if (!board || !selectedCell || !initialBoard) return;
+    if (!board || !selectedCell || !initialBoard || !solutionBoard) return;
 
     const { row, col } = selectedCell;
     if (initialBoard[row][col] !== null) return;
@@ -48,13 +51,18 @@ function App() {
     setBoard(newBoard);
   };
 
+  const checkAnswers = () => {};
+
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh w-full bg-linear-to-r from-blue-400 to-purple-600">
       <section className="flex gap-6 mb-6 ">
         <h1 className="text-6xl text-white font-extrabold font-audiowide">
           Südoku
         </h1>
-        <button className="text-6xl text-white transition-transform duration-150 ease-in-out active:scale-110">
+        <button
+          onClick={checkAnswers}
+          className="text-6xl text-white transition-transform duration-150 ease-in-out active:scale-110"
+        >
           <IoIosCheckmarkCircleOutline />
         </button>
       </section>
