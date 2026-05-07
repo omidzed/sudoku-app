@@ -3,6 +3,7 @@ import "./App.css";
 import { fetchSudoku } from "./services/sudokuApi";
 import type { Board } from "./types";
 import { NumberPad } from "./NumberPad";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 function App() {
   const [board, setBoard] = useState<Board | null>(null);
@@ -49,8 +50,14 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh w-full bg-linear-to-r from-blue-400 to-purple-600">
-      <h1 className="text-6xl text-white p-6">SUDOKU</h1>
-
+      <section className="flex gap-6 mb-6 ">
+        <h1 className="text-6xl text-white font-extrabold font-audiowide">
+          Südoku
+        </h1>
+        <button className="text-6xl text-white transition-transform duration-150 ease-out active:scale-90">
+          <IoIosCheckmarkCircleOutline />
+        </button>
+      </section>
       {loading && <p className="text-white mt-4">Loading...</p>}
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
