@@ -6,15 +6,16 @@ import { NumberPad } from "./NumberPad";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [board, setBoard] = useState<Board | null>(null);
   const [initialBoard, setInitialBoard] = useState<Board | null>(null);
   const [solutionBoard, setSolutionBoard] = useState<Board | null>(null);
+  const [isCheckingAnswers, setIsCheckingAnswers] = useState(false);
   const [selectedCell, setSelectedCell] = useState<{
     row: number;
     col: number;
   } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadPuzzle = async () => {
@@ -25,7 +26,6 @@ function App() {
         const puzzle = data.puzzle.map((row) => [...row]);
         const solution = data.solution.map((row) => [...row]);
 
-        console.log("API DATA:", data);
         setBoard(puzzle);
         setSolutionBoard(solution);
         setInitialBoard(puzzle.map((row) => [...row]));
@@ -49,9 +49,14 @@ function App() {
     const newBoard = board.map((row) => [...row]);
     newBoard[row][col] = clickedNumber;
     setBoard(newBoard);
+    setSelectedCell(null);
   };
 
-  const checkAnswers = () => {};
+  const solutionsToggle = () => {
+    isCheckingAnswers
+      ? setIsCheckingAnswers(false)
+      : setIsCheckingAnswers(true);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh w-full bg-linear-to-r from-blue-400 to-purple-600">
@@ -60,7 +65,7 @@ function App() {
           Südoku
         </h1>
         <button
-          onClick={checkAnswers}
+          onClick={solutionsToggle}
           className="text-6xl text-white transition-transform duration-150 ease-in-out active:scale-110"
         >
           <IoIosCheckmarkCircleOutline />
@@ -75,21 +80,40 @@ function App() {
             row.map((cell, colIndex) => {
               let styling = "";
 
-              if (rowIndex % 3 === 0) styling += " border-t-4";
-              if (colIndex % 3 === 0) styling += " border-l-4";
-              if (rowIndex === 8) styling += " border-b-4";
-              if (colIndex === 8) styling += " border-r-4";
-              if (
-                selectedCell?.row === rowIndex &&
-                selectedCell?.col === colIndex &&
-                initialBoard?.[selectedCell.row][selectedCell.col] === null
-              )
-                styling += " bg-yellow-400";
-
               const boxRow = Math.floor(rowIndex / 3);
               const boxCol = Math.floor(colIndex / 3);
               const isLightBox = (boxRow + boxCol) % 2 === 0;
               const isInitial = initialBoard?.[rowIndex][colIndex] !== null;
+
+              const textColor = isLightBox ? "text-blue-800" : "text-white";
+              let bgColor = isLightBox ? "bg-white" : "bg-blue-400";
+
+              if (
+                selectedCell?.row === rowIndex &&
+                selectedCell?.col === colIndex &&
+                !isInitial
+              ) {
+                bgColor = "bg-yellow-400";
+              }
+
+              if (isCheckingAnswers && !isInitial && cell !== null) {
+                bgColor =
+                  cell === solutionBoard?.[rowIndex][colIndex]
+                    ? "bg-green-400"
+                    : "bg-red-400";
+              }
+              if (rowIndex % 3 === 0) styling += " border-t-4";
+              if (colIndex % 3 === 0) styling += " border-l-4";
+              if (rowIndex === 8) styling += " border-b-4";
+              if (colIndex === 8) styling += " border-r-4";
+
+              if (
+                selectedCell?.row === rowIndex &&
+                selectedCell?.col === colIndex &&
+                initialBoard?.[selectedCell.row][selectedCell.col] === null
+              ) {
+                styling += " bg-yellow-400";
+              }
 
               return (
                 <div
@@ -97,12 +121,8 @@ function App() {
                   onClick={() =>
                     setSelectedCell({ row: rowIndex, col: colIndex })
                   }
-                  className={`w-12 h-12 flex items-center justify-center border border-blue-900  ${
-                    isLightBox
-                      ? "bg-white text-blue-800"
-                      : "bg-blue-400 text-white"
-                  } 
-                  ${styling}`}
+                  className={`w-12 h-12 flex items-center justify-center border border-blue-900 
+                  ${styling} ${bgColor} ${textColor}`}
                 >
                   <div
                     onClick={() => {
