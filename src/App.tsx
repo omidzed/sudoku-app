@@ -54,7 +54,7 @@ function App() {
         <h1 className="text-6xl text-white font-extrabold font-audiowide">
           Südoku
         </h1>
-        <button className="text-6xl text-white transition-transform duration-150 ease-out active:scale-90">
+        <button className="text-6xl text-white transition-transform duration-150 ease-in-out active:scale-110">
           <IoIosCheckmarkCircleOutline />
         </button>
       </section>
@@ -113,7 +113,7 @@ function App() {
           )}
         </section>
       )}
-      <section className="mt-6">
+      <section className="flex justify-end mt-6">
         <NumberPad onNumberClick={handleNumberClick} />
       </section>
     </div>

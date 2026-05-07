@@ -1,4 +1,4 @@
-type Props = { onNumberClick: (clickedNumber:number) => void };
+type Props = { onNumberClick: (clickedNumber: number) => void };
 
 export const NumberPad = ({ onNumberClick }: Props) => {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -9,7 +9,7 @@ export const NumberPad = ({ onNumberClick }: Props) => {
         <button
           key={number}
           onClick={() => onNumberClick(number)}
-          className="bg-white text-blue-800 text-xl p-3 mx-0.5 border-white rounded-lg "
+          className="bg-white text-blue-800 text-xl p-3 mx-0.5 border-white rounded-lg transition-transform duration-150 ease-in-out active:scale-90"
         >
           {number}
         </button>
