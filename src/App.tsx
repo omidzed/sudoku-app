@@ -52,11 +52,17 @@ function App() {
     setSelectedCell(null);
   };
 
-  const solutionsToggle = () => {
+  const solutionsCheck = () => {
     isCheckingAnswers
       ? setIsCheckingAnswers(false)
       : setIsCheckingAnswers(true);
   };
+
+  useEffect(() => {
+    if (!isCheckingAnswers) return;
+    const timer = setTimeout(() => setIsCheckingAnswers(false), 2000);
+    return () => clearTimeout(timer);
+  }, [isCheckingAnswers]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh w-full bg-linear-to-r from-blue-400 to-purple-600">
@@ -65,8 +71,8 @@ function App() {
           Südoku
         </h1>
         <button
-          onClick={solutionsToggle}
-          className="text-6xl text-white transition-transform duration-150 ease-in-out active:scale-110"
+          onClick={solutionsCheck}
+          className="text-6xl text-white transition-transform duration-150 ease-in-out active:scale-110 cursor-pointer"
         >
           <IoIosCheckmarkCircleOutline />
         </button>
@@ -84,6 +90,10 @@ function App() {
               const boxCol = Math.floor(colIndex / 3);
               const isLightBox = (boxRow + boxCol) % 2 === 0;
               const isInitial = initialBoard?.[rowIndex][colIndex] !== null;
+
+              if (!isInitial) {
+                styling += "cursor-pointer";
+              }
 
               const textColor = isLightBox ? "text-blue-800" : "text-white";
               let bgColor = isLightBox ? "bg-white" : "bg-blue-400";

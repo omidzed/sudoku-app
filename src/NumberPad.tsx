@@ -9,7 +9,7 @@ export const NumberPad = ({ onNumberClick }: Props) => {
         <button
           key={number}
           onClick={() => onNumberClick(number)}
-          className="bg-white text-blue-800 text-xl p-3 mx-0.5 border-white rounded-lg transition-transform duration-150 ease-in-out active:scale-90"
+          className="bg-white text-blue-800 text-xl p-3 mx-0.5 border-white rounded-lg transition-transform duration-150 ease-in-out active:scale-90 cursor-pointer"
         >
           {number}
         </button>
